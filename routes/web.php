@@ -13,10 +13,28 @@ use App\Http\Controllers\NoteController;
 use App\Http\Controllers\EmploiDuTempsController;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 });
 
 Auth::routes();
+
+Route::get('/home', function () {
+    $role = auth()->user()->role ?? null;
+
+    if ($role === 'admin') {
+        return redirect('/admin/dashboard');
+    }
+
+    if ($role === 'enseignant') {
+        return redirect('/enseignant/dashboard');
+    }
+
+    if ($role === 'etudiant') {
+        return redirect('/etudiant/dashboard');
+    }
+
+    return redirect('/');
+})->middleware('auth');
 
 // Routes Admin seulement
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {

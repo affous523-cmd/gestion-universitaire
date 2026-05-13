@@ -10,8 +10,6 @@ class LoginController extends Controller
 {
     use AuthenticatesUsers;
 
-    protected $redirectTo = '/admin/dashboard';
-
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
@@ -26,5 +24,7 @@ class LoginController extends Controller
         } elseif ($user->role === 'etudiant') {
             return redirect('/etudiant/dashboard');
         }
+
+        return redirect('/');
     }
 } 
